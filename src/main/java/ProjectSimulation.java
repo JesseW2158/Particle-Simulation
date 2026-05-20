@@ -34,8 +34,8 @@ public class ProjectSimulation {
 			throw new IllegalStateException("Unable to initialize GLFW");
 		}
 		
-		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
-		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
+		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
 		// Create the window
 		window = glfwCreateWindow(300, 300, "Hello World!", NULL, NULL);
