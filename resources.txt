@@ -1,0 +1,5 @@
+https://www.youtube.com/watch?v=_YbGWoUaZg0
+
+https://github.com/kavan010/gravity_sim/blob/main/gravity_sim.cpp
+
+https://github.com/codingminecraft/MarioYoutube/tree/master

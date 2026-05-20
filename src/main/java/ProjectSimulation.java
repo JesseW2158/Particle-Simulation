@@ -2,6 +2,8 @@ import org.lwjgl.*;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 import java.nio.*;
 
@@ -33,20 +35,24 @@ public class ProjectSimulation {
 		if (!glfwInit()) {
 			throw new IllegalStateException("Unable to initialize GLFW");
 		}
-		
+
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
 		// Create the window
-		window = glfwCreateWindow(300, 300, "Hello World!", NULL, NULL);
-		if (window == NULL)
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		window = glfwCreateWindow(screenSize.width - 100, screenSize.height - 100, "Particle Simulation!", NULL, NULL);
+
+		if (window == NULL) {
 			throw new RuntimeException("Failed to create the GLFW window");
+		}
 
 		// Setup a key callback. It will be called every time a key is pressed, repeated
 		// or released.
 		glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-			if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
+			if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
 				glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
+			}
 		});
 
 		// Get the thread stack and push a new frame
@@ -61,10 +67,7 @@ public class ProjectSimulation {
 			GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
 			// Center the window
-			glfwSetWindowPos(
-					window,
-					(vidmode.width() - pWidth.get(0)) / 2,
-					(vidmode.height() - pHeight.get(0)) / 2);
+			glfwSetWindowPos(window, (vidmode.width() - pWidth.get(0)) / 2, (vidmode.height() - pHeight.get(0)) / 2);
 		} // the stack frame is popped automatically
 
 		// Make the OpenGL context current
@@ -85,7 +88,7 @@ public class ProjectSimulation {
 		GL.createCapabilities();
 
 		// Set the clear color
-		glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+		glClearColor(0f, 0f, 0f, 0f);
 
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.
@@ -103,5 +106,4 @@ public class ProjectSimulation {
 	public static void main(String[] args) {
 		new ProjectSimulation().run();
 	}
-
 }
