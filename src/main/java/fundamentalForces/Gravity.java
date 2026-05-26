@@ -8,12 +8,12 @@ public class Gravity {
 
     public static Vector gravitationalForce(Particle origin, Particle target) {
         double magnitude = gravityMagnitude(origin.mass(), target.mass(),
-                origin.position().subtract(target.position()));
-        Vector direction = target.position().subtract(origin.position()).normalize();
+                Vector.subtract(target.position(), origin.position()).magnitude());
+        Vector direction = Vector.subtract(target.position(), origin.position()).normalized();
         return direction.multiply(magnitude);
     }
 
     private static double gravityMagnitude(double mass1, double mass2, double distance) {
-        return G * (mass1 * mass2) / Math.pow(distance / Math.pow(mass2, distance), 2);
+        return G * (mass1 * mass2) / Math.pow(distance / Math.pow(10, 9), 2);
     }
 }
