@@ -3,6 +3,8 @@ package particle;
 import vector.Vector;
 
 public class Particle {
+    private static int idCounter = 0;
+    private final int id;
     private final double mass;
     private final double charge;
     private final double radius;
@@ -12,16 +14,16 @@ public class Particle {
     private Vector velocity;
     private Vector acceleration;
 
-    public Particle(double mass, double charge, double radius, double totalSpin, int spinDirection, Vector position,
-            Vector velocity, Vector acceleration) {
+    public Particle(double mass, double charge, double radius, double totalSpin, int spinDirection, Vector position) {
+        this.id = idCounter++;
         this.mass = mass;
         this.charge = charge;
         this.radius = radius;
         this.totalSpin = totalSpin;
         this.spinDirection = spinDirection;
         this.position = position;
-        this.velocity = velocity;
-        this.acceleration = acceleration;
+        this.velocity = new Vector(0d, 0d, 0d);
+        this.acceleration = new Vector(0d, 0d, 0d);
     }
 
     public void update(double deltaTime) {
@@ -29,6 +31,15 @@ public class Particle {
         position.add(velocity.multiply(deltaTime));
     }
 
-    public void 
+    @Override
+    public int hashCode() {
+        return id;
+    }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(id).append(": ").append(velocity);
+        return sb.toString();
+    }
 }
