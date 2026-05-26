@@ -1,4 +1,5 @@
-package serenity;
+package Serenity;
+
 
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
@@ -109,6 +110,10 @@ public class WindowManager {
         GL11.glClearColor(r, g, b, a);
     }
 
+    public boolean isKeyPressed(int keyCode) {
+        return GLFW.glfwGetKey(windowHandle, keyCode) == GLFW.GLFW_PRESS;
+    }
+    
     public boolean windowShouldClose() {
         return GLFW.glfwWindowShouldClose(windowHandle);
     }
