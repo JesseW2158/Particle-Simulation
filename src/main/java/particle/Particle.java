@@ -31,6 +31,14 @@ public class Particle {
         position.add(velocity.multiply(deltaTime));
     }
 
+    public double mass() {
+        return mass;
+    }
+
+    public Vector position() {
+        return position;
+    }
+
     @Override
     public int hashCode() {
         return id;

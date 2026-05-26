@@ -81,6 +81,28 @@ public class Vector {
         return this;
     }
 
+    public double magnitude() {
+        return Math.sqrt(x * x + y * y + z * z);
+    }
+
+    public Vector normalize() {
+        double mag = magnitude();
+        if (mag != 0) {
+            this.x /= mag;
+            this.y /= mag;
+            this.z /= mag;
+        }
+        return this;
+    }
+
+    public Vector normalized() {
+        double mag = magnitude();
+        if (mag != 0) {
+            return new Vector(this.x / mag, this.y / mag, this.z / mag);
+        }
+        return new Vector(0d, 0d, 0d);
+    }
+
     // ==========<< Static methods >>==========
     public static Vector add(Vector a, Vector b) {
         return new Vector(a.x() + b.x(), a.y() + b.y(), a.z() + b.z());
