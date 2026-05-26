@@ -10,6 +10,7 @@ public class Gravity {
         double magnitude = gravityMagnitude(origin.mass(), target.mass(),
                 Vector.subtract(target.position(), origin.position()).magnitude());
         Vector direction = Vector.subtract(target.position(), origin.position()).normalized();
+        origin.addForce(direction.multiply(magnitude));
         return direction.multiply(magnitude);
     }
 

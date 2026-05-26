@@ -39,6 +39,10 @@ public class Particle {
         return position;
     }
 
+    public void addForce(Vector force) {
+        acceleration.add(force.multiply(1 / mass));
+    }
+
     @Override
     public int hashCode() {
         return id;
