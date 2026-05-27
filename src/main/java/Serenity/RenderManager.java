@@ -1,5 +1,7 @@
 package Serenity;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 
 import Test.Launcher;
 
@@ -14,8 +16,13 @@ public class RenderManager {
         
     }
 
-    public void render() {
-
+    public void render(Particle particle) {
+        clear();
+        GL30.glBindVertexArray(particle.getId());
+        GL20.glEnableVertexAttribArray(0);
+        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, particle.getVertexCount());
+        GL20.glDisableVertexAttribArray(0);
+        GL30.glBindVertexArray(0);
     }
 
     public void clear() {

@@ -1,24 +1,41 @@
 package Test;
 
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
+import Serenity.Particle;
+import Serenity.ParticleLoader;
 import Serenity.RenderManager;
 import Serenity.WindowManager;
 import Serenity.Util.ILogic;
 
 public class ParticleSimulation implements ILogic {
     private final RenderManager renderer;
+    private final ParticleLoader loader;
     private final WindowManager window;
+
+    private Particle particle;
 
     public ParticleSimulation() {
         this.renderer = new RenderManager();
+        this.loader = new ParticleLoader();
         this.window = Launcher.getWindow();
     }
 
     @Override
     public void init() throws Exception {
         renderer.init();
+
+        float[] vertices = {
+                -0.5f, 0.5f, 0f,
+                -0.5f, -0.5f, 0f,
+                0.5f, -0.5f, 0f,
+                0.5f, -0.5f, 0f,
+                0.5f, 0.5f, 0f,
+                -0.5f, 0.5f, 0f
+        };
+
+        particle = loader.loadParticle(vertices);
+        renderer.render(particle);
     }
 
     @Override
@@ -33,16 +50,18 @@ public class ParticleSimulation implements ILogic {
 
     @Override
     public void render() {
-        if(window.isResize()) {
+        if (window.isResize()) {
             GL11.glViewport(0, 0, window.getWidth(), window.getHeight());
-            window.setResize(true);
+            window.setResize(false);
         }
 
+        window.setClearColor(1, 1, 1, 0);
         renderer.clear();
     }
 
     @Override
     public void cleanup() {
         renderer.cleanup();
+        loader.cleanup();
     }
 }

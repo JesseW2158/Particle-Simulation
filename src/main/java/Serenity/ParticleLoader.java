@@ -1,4 +1,4 @@
-package Serenity.Util;
+package Serenity;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
@@ -9,21 +9,27 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-public class ParticleLoader {
-    private int vertexCount;
+import Serenity.Util.Utils;
 
+public class ParticleLoader {
     private List<Integer> vaos = new ArrayList<>();
     private List<Integer> vbos = new ArrayList<>();
 
     public Particle loadParticle(float[] vertices) {
-
+        int id = createVAO();
+        storeDataAttributeList(0, 3, vertices);
+        unbind();
+        return new Particle(id, vertices.length / 3);
     }
 
     private int createVAO() {
-
+        int id = GL30.glGenVertexArrays();
+        vaos.add(id);
+        GL30.glBindVertexArray(id);
+        return id;
     }
 
-    private void storeDataAttributeList(int attributeNumber, float[] data) {
+    private void storeDataAttributeList(int attributeNumber, int vertexCount, float[] data) {
         int vbo = GL15.glGenBuffers();
         vbos.add(vbo);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);

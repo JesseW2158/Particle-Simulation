@@ -1,4 +1,4 @@
-package Serenity.Util;
+package Serenity;
 
 public class Particle {
     private int id;
@@ -9,7 +9,6 @@ public class Particle {
         this.vertexCount = vertexCount;
     }
 
-    // Getters and setters
     public int getId() {
         return id;
     }
