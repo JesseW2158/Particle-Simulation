@@ -1,6 +1,7 @@
 package Serenity;
 
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +16,9 @@ public class ParticleLoader {
     private List<Integer> vaos = new ArrayList<>();
     private List<Integer> vbos = new ArrayList<>();
 
-    public Particle loadParticle(float[] vertices) {
+    public Particle loadParticle(float[] vertices, int[] indices) {
         int id = createVAO();
+        storeIndicesBuffer(indices);
         storeDataAttributeList(0, 3, vertices);
         unbind();
         return new Particle(id, vertices.length / 3);
@@ -29,6 +31,14 @@ public class ParticleLoader {
         return id;
     }
 
+    private void storeIndicesBuffer(int[] indices) {
+        int vbo = GL15.glGenBuffers();
+        vbos.add(vbo);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vbo);
+        IntBuffer buffer = Utils.storeDataInIntBuffer(indices);
+        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
+    }
+
     private void storeDataAttributeList(int attributeNumber, int vertexCount, float[] data) {
         int vbo = GL15.glGenBuffers();
         vbos.add(vbo);
@@ -36,7 +46,7 @@ public class ParticleLoader {
         FloatBuffer buffer = Utils.storeDataInFloatBuffer(data);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
         GL20.glVertexAttribPointer(attributeNumber, vertexCount, GL11.GL_FLOAT, false, 0, 0);
-        GL15.glBeginQuery(attributeNumber, vbo);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
     }
 
     private void unbind() {

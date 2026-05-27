@@ -3,26 +3,33 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+import Serenity.Util.Utils;
 import Test.Launcher;
 
 public class RenderManager {
     private final WindowManager window;
+    private ShaderManager shader;
 
     public RenderManager() {
         this.window = Launcher.getWindow();
     }
 
     public void init() throws Exception {
-        
+        shader = new ShaderManager();
+        shader.createVertexShader(Utils.loadResource("Resources/Shaders/vertex.vs"));
+        shader.createFragmentShader(Utils.loadResource("Resources/Shaders/fragment.fs"));
+        shader.link();
     }
 
     public void render(Particle particle) {
         clear();
+        shader.bind();
         GL30.glBindVertexArray(particle.getId());
         GL20.glEnableVertexAttribArray(0);
         GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, particle.getVertexCount());
         GL20.glDisableVertexAttribArray(0);
         GL30.glBindVertexArray(0);
+        shader.unbind();
     }
 
     public void clear() {
@@ -30,6 +37,6 @@ public class RenderManager {
     }
 
     public void cleanup() {
-
+        shader.cleanup();
     }
 }

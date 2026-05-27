@@ -1,5 +1,8 @@
 package Test;
 
+import java.util.ArrayList;
+
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import Serenity.Particle;
@@ -17,13 +20,14 @@ public class ParticleSimulation implements ILogic {
 
     public ParticleSimulation() {
         this.renderer = new RenderManager();
-        this.loader = new ParticleLoader();
         this.window = Launcher.getWindow();
+        this.loader = new ParticleLoader();
     }
 
     @Override
     public void init() throws Exception {
         renderer.init();
+
 
         float[] vertices = {
                 -0.5f, 0.5f, 0f,
@@ -34,7 +38,12 @@ public class ParticleSimulation implements ILogic {
                 -0.5f, 0.5f, 0f
         };
 
-        particle = loader.loadParticle(vertices);
+        int[] indices = {
+                0, 1, 3,
+                3, 1, 2
+        };
+        
+        particle = loader.loadParticle(vertices, indices);
         renderer.render(particle);
     }
 
@@ -45,7 +54,6 @@ public class ParticleSimulation implements ILogic {
 
     @Override
     public void update() {
-
     }
 
     @Override
@@ -56,7 +64,6 @@ public class ParticleSimulation implements ILogic {
         }
 
         window.setClearColor(1, 1, 1, 0);
-        renderer.clear();
     }
 
     @Override
