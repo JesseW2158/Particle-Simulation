@@ -14,7 +14,7 @@ public class Utils {
         buffer.put(data).flip();
         return buffer;
     }
-    
+
     public static IntBuffer storeDataInIntBuffer(int[] data) {
         IntBuffer buffer = MemoryUtil.memAllocInt(data.length);
         buffer.put(data).flip();
@@ -22,13 +22,14 @@ public class Utils {
     }
 
     public static String loadResource(String fileName) throws Exception {
-        String result;
-        
-        try(InputStream in = Utils.class.getResourceAsStream(fileName); 
-            Scanner scanner = new Scanner(in, StandardCharsets.UTF_8.name())) {
-                result = scanner.useDelimiter("\\A").next();
+        InputStream in = Utils.class.getResourceAsStream("/" + fileName);
+
+        if (in == null) {
+            throw new Exception("Resource not found on classpath: " + fileName);
         }
 
-        return result;
+        try (Scanner scanner = new Scanner(in, StandardCharsets.UTF_8.name())) {
+            return scanner.useDelimiter("\\A").next();
+        }
     }
 }

@@ -16,8 +16,8 @@ public class RenderManager {
 
     public void init() throws Exception {
         shader = new ShaderManager();
-        shader.createVertexShader(Utils.loadResource("Resources/Shaders/vertex.vs"));
-        shader.createFragmentShader(Utils.loadResource("Resources/Shaders/fragment.fs"));
+        shader.createVertexShader(Utils.loadResource("Shaders/vertex.vs"));
+        shader.createFragmentShader(Utils.loadResource("Shaders/fragment.fs"));
         shader.link();
     }
 
@@ -26,7 +26,7 @@ public class RenderManager {
         shader.bind();
         GL30.glBindVertexArray(particle.getId());
         GL20.glEnableVertexAttribArray(0);
-        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, particle.getVertexCount());
+        GL11.glDrawElements(GL11.GL_TRIANGLES, particle.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
         GL20.glDisableVertexAttribArray(0);
         GL30.glBindVertexArray(0);
         shader.unbind();
