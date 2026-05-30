@@ -3,6 +3,7 @@ package Serenity;
 public class Particle {
     private static int idCounter = 0;
     private final int id;
+    private final int vaoId;
     private int vertexCount;
     private final double mass;
     private final double charge;
@@ -13,9 +14,10 @@ public class Particle {
     private Vector velocity;
     private Vector acceleration;
 
-    public Particle(int vertexCount, double mass, double charge, double radius, double totalSpin, int spinDirection,
+    public Particle(int vaoId, int vertexCount, double mass, double charge, double radius, double totalSpin, int spinDirection,
                     Vector position) {
         this.id = idCounter++;
+        this.vaoId = vaoId;
         this.vertexCount = vertexCount;
         this.mass = mass;
         this.charge = charge;
@@ -30,6 +32,10 @@ public class Particle {
     // ==========<< Getters >>==========
     public int getId() {
         return id;
+    }
+
+    public int getVaoId() {
+        return vaoId;
     }
 
     public double mass() {

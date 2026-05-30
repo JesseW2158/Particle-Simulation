@@ -11,7 +11,7 @@ java {
 }
 
 application {
-    mainClass = 'ProjectSimulation'
+    mainClass = 'Test.Launcher'
 }
 
 project.ext.lwjglVersion = "3.4.1"

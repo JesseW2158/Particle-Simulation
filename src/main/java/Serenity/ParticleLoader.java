@@ -17,11 +17,11 @@ public class ParticleLoader {
     private List<Integer> vbos = new ArrayList<>();
 
     public Particle loadParticle(float[] vertices, int[] indices) {
-        int id = createVAO();
+        int vaoId = createVAO();
         storeIndicesBuffer(indices);
         storeDataAttributeList(0, 3, vertices);
         unbind();
-        return new Particle(indices.length / 3, 1.0, 1.0, 1.0, 1.0, 1, Vector.zero());
+        return new Particle(vaoId, indices.length, 1.0, 1.0, 1.0, 1.0, 1, Vector.zero());
     }
 
     private int createVAO() {

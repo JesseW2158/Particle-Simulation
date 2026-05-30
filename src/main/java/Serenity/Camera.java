@@ -43,6 +43,28 @@ public class Camera {
         this.rotation.z += offsetZ;
     }
 
+    public void moveForward(float amount) {
+        double yaw = Math.toRadians(rotation.y);
+        double pitch = Math.toRadians(rotation.x);
+        position.x += (float) (Math.sin(yaw) * Math.cos(pitch)) * amount;
+        position.y += (float) (-Math.sin(pitch)) * amount;
+        position.z += (float) (-Math.cos(yaw) * Math.cos(pitch)) * amount;
+    }
+
+    public void look(float deltaPitch, float deltaYaw) {
+        rotation.x += deltaPitch;
+        if (rotation.x > 89f) {
+            rotation.x = 89f;
+        } else if (rotation.x < -89f) {
+            rotation.x = -89f;
+        }
+
+        rotation.y = (rotation.y + deltaYaw) % 360f;
+        if (rotation.y < 0f) {
+            rotation.y += 360f;
+        }
+    }
+
     public Vector3f getPosition() {
         return position;
     }
