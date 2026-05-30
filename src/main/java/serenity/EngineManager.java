@@ -1,7 +1,7 @@
 package Serenity;
 
-// import org.lwjgl.glfw.GLFW;
-// import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWErrorCallback;
 
 import Serenity.Util.ILogic;
 import Test.Launcher;
@@ -10,10 +10,10 @@ public class EngineManager {
     public static final long NANOSECONDS_IN_SECOND = 1_000_000_000L;
     public static final float FRAMERATE = 1000;
 
-// private static int fps;
-// private static float frametime = 1.0f / FRAMERATE;
+    private static int fps;
+    private static float frametime = 1.0f / FRAMERATE;
 
-// private boolean isRunning;
+    private boolean isRunning;
 
     private WindowManager window;
     private GLFWErrorCallback errorCallback;
@@ -21,11 +21,11 @@ public class EngineManager {
 
     private void init() throws Exception {
         GLFW.glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
-        
+
         window = Launcher.getWindow();
         gameLogic = Launcher.getSimulation();
 
-        window.init(); 
+        window.init();
         gameLogic.init();
     }
 
@@ -158,5 +158,4 @@ public class EngineManager {
     public void setErrorCallback(GLFWErrorCallback errorCallback) {
         this.errorCallback = errorCallback;
     }
-
-// }
+}
