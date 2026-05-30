@@ -1,5 +1,7 @@
 package Test;
 
+import java.util.List;
+
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
@@ -7,46 +9,33 @@ import org.lwjgl.opengl.GL11;
 
 import Serenity.Camera;
 import Serenity.MouseInput;
-import Serenity.Particle;
-import Serenity.ParticleLoader;
-import Serenity.RenderManager;
+import Serenity.PointRenderer;
 import Serenity.WindowManager;
 import Serenity.Util.Constants;
 import Serenity.Util.ILogic;
+import particle.Particle;
+import particle.ParticleSpawner;
 
 public class ParticleSimulation implements ILogic {
-    private final RenderManager renderer;
-    private final ParticleLoader loader;
+    private final PointRenderer pointRenderer;
     private final WindowManager window;
 
-    private Particle particle;
-    private final Camera camera = new Camera(new Vector3f(0, 0, 2), new Vector3f(0, 0, 0));
+    private List<Particle> particles;
+    private final Camera camera = new Camera(new Vector3f(0, 0, 30), new Vector3f(0, 0, 0));
     private final MouseInput mouseInput = new MouseInput();
     private long lastFrameTime = System.nanoTime();
 
     public ParticleSimulation() {
-        this.renderer = new RenderManager();
+        this.pointRenderer = new PointRenderer();
         this.window = Launcher.getWindow();
-        this.loader = new ParticleLoader();
     }
 
     @Override
     public void init() throws Exception {
-        renderer.init();
+        particles = ParticleSpawner.randomCloud(Constants.RENDERED_PARTICLES, 10f, 1L);
 
-        float[] vertices = {
-                -0.5f, 0.5f, 0f,   // 0 top-left
-                -0.5f, -0.5f, 0f,  // 1 bottom-left
-                0.5f, -0.5f, 0f,   // 2 bottom-right
-                0.5f, 0.5f, 0f     // 3 top-right
-        };
-
-        int[] indices = {
-                0, 1, 3,
-                3, 1, 2
-        };
-
-        particle = loader.loadParticle(vertices, indices);
+        pointRenderer.init();
+        pointRenderer.buildBuffer(particles);
 
         mouseInput.init(window);
     }
@@ -102,13 +91,12 @@ public class ParticleSimulation implements ILogic {
             window.setResize(false);
         }
 
-        window.setClearColor(1, 1, 1, 0);
-        renderer.render(particle, camera);
+        window.setClearColor(0, 0, 0, 1);
+        pointRenderer.render(camera);
     }
 
     @Override
     public void cleanup() {
-        renderer.cleanup();
-        loader.cleanup();
+        pointRenderer.cleanup();
     }
 }
