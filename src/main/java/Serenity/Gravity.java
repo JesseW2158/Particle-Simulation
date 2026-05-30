@@ -1,7 +1,6 @@
-package fundamentalForces;
+package Serenity;
 
-import particle.Particle;
-import vector.Vector;
+
 
 public class Gravity {
     private static final double G = 6.67430e-11;

@@ -1,8 +1,7 @@
-package space;
+package Serenity;
 
 import java.util.HashSet;
-import particle.Particle;
-import fundamentalForces.Gravity;
+
 
 public class Space {
     private HashSet<Particle> particles;

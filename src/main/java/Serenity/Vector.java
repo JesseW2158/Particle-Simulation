@@ -1,11 +1,15 @@
-package vector;
+package Serenity;
 
 public class Vector {
     private double x;
     private double y;
     private double z;
 
-    public Vector(Double x, Double y, Double z) {
+    public static Vector zero() {
+        return new Vector(0d, 0d, 0d);
+    }
+
+    public Vector(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;

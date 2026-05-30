@@ -21,7 +21,7 @@ public class ParticleLoader {
         storeIndicesBuffer(indices);
         storeDataAttributeList(0, 3, vertices);
         unbind();
-        return new Particle(id, indices.length / 3);
+        return new Particle(indices.length / 3, 1.0, 1.0, 1.0, 1.0, 1, Vector.zero());
     }
 
     private int createVAO() {
