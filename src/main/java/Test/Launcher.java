@@ -1,8 +1,8 @@
 package Test;
 
 import Serenity.EngineManager;
-import Serenity.WindowManager;
 import Serenity.Util.Constants;
+import Serenity.WindowManager;
 
 public class Launcher {
 	private static WindowManager window;
@@ -18,7 +18,6 @@ public class Launcher {
 		try {
 			engine.start();
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
     

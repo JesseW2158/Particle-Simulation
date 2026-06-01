@@ -10,9 +10,9 @@ import org.lwjgl.opengl.GL11;
 import Serenity.Camera;
 import Serenity.MouseInput;
 import Serenity.PointRenderer;
-import Serenity.WindowManager;
 import Serenity.Util.Constants;
 import Serenity.Util.ILogic;
+import Serenity.WindowManager;
 import particle.Particle;
 import particle.ParticleSpawner;
 

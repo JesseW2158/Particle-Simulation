@@ -1,15 +1,14 @@
 package Serenity.Util;
 
-import static org.junit.Assert.assertEquals;
-
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import Serenity.Camera;
-import Serenity.Particle;
-import Serenity.Vector;
+import particle.Particle;
+import particle.ParticleType;
 
 public class TransformationTest {
     private static final float EPS = 1e-5f;
@@ -38,7 +37,7 @@ public class TransformationTest {
 
     @Test
     public void worldMatrixTranslatesToParticlePosition() {
-        Particle particle = new Particle(0, 6, 1d, 1d, 1d, 1d, 1, new Vector(1d, 2d, 3d));
+        Particle particle = new Particle(new Vector3f(1f, 2f, 3f), ParticleType.PROTON);
         Matrix4f world = new Transformation().getWorldMatrix(particle);
         Vector4f p = new Vector4f(0f, 0f, 0f, 1f);
         world.transform(p);

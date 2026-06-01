@@ -22,4 +22,16 @@ public class Particle {
     public float cbrtMass() {
         return (float) Math.cbrt(type.mass());
     }
+
+    public float renderRadius() {
+        return type.renderStyle().radiusFor(cbrtMass());
+    }
+
+    public float glowStrength() {
+        return type.renderStyle().glowStrength();
+    }
+
+    public float glowRadiusScale() {
+        return type.renderStyle().glowRadiusScale();
+    }
 }

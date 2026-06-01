@@ -4,7 +4,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import Serenity.Camera;
-import Serenity.Particle;
+import particle.Particle;
 
 public class Transformation {
     private final Matrix4f viewMatrix = new Matrix4f();
@@ -21,11 +21,9 @@ public class Transformation {
     }
 
     public Matrix4f getWorldMatrix(Particle particle) {
-        float x = (float) particle.position().x();
-        float y = (float) particle.position().y();
-        float z = (float) particle.position().z();
+        Vector3f pos = particle.position();
         worldMatrix.identity()
-                .translate(x, y, z)
+            .translate(pos.x, pos.y, pos.z)
                 .scale(1f);
         return worldMatrix;
     }

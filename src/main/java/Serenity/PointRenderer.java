@@ -16,7 +16,7 @@ import Test.Launcher;
 import particle.Particle;
 
 public class PointRenderer {
-    public static final float K = 25f;
+    public static final float K = 65f;
 
     private final WindowManager window;
     private final Transformation transformation;
@@ -39,10 +39,9 @@ public class PointRenderer {
         shader.createUniform("projectionMatrix");
         shader.createUniform("viewMatrix");
         shader.createUniform("k");
+        shader.createUniform("renderPass");
 
         GL11.glEnable(GL32.GL_PROGRAM_POINT_SIZE);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
     }
 
     public void buildBuffer(List<Particle> particles) {
@@ -50,16 +49,19 @@ public class PointRenderer {
         float[] positions = new float[count * 3];
         float[] sizes = new float[count];
         float[] colors = new float[count * 3];
+        float[] glowParams = new float[count * 2];
 
         for (int i = 0; i < count; i++) {
             Particle p = particles.get(i);
             positions[i * 3] = p.position().x;
             positions[i * 3 + 1] = p.position().y;
             positions[i * 3 + 2] = p.position().z;
-            sizes[i] = p.cbrtMass();
+            sizes[i] = p.renderRadius();
             colors[i * 3] = p.type().color().x;
             colors[i * 3 + 1] = p.type().color().y;
             colors[i * 3 + 2] = p.type().color().z;
+            glowParams[i * 2] = p.glowStrength();
+            glowParams[i * 2 + 1] = p.glowRadiusScale();
         }
 
         vaoId = GL30.glGenVertexArrays();
@@ -67,6 +69,7 @@ public class PointRenderer {
         storeAttribute(0, 3, positions);
         storeAttribute(1, 1, sizes);
         storeAttribute(2, 3, colors);
+        storeAttribute(3, 2, glowParams);
         GL30.glBindVertexArray(0);
     }
 
@@ -82,7 +85,6 @@ public class PointRenderer {
 
     public void render(Camera camera) {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-        GL11.glDepthMask(false);
 
         shader.bind();
         shader.setUniform("projectionMatrix", window.updateProjectionMatrix());
@@ -93,13 +95,27 @@ public class PointRenderer {
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
         GL20.glEnableVertexAttribArray(2);
+        GL20.glEnableVertexAttribArray(3);
+
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glDepthMask(true);
+        shader.setUniform("renderPass", 0);
         GL11.glDrawArrays(GL11.GL_POINTS, 0, count);
+
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+        GL11.glDepthMask(false);
+        shader.setUniform("renderPass", 1);
+        GL11.glDrawArrays(GL11.GL_POINTS, 0, count);
+
         GL20.glDisableVertexAttribArray(0);
         GL20.glDisableVertexAttribArray(1);
         GL20.glDisableVertexAttribArray(2);
+        GL20.glDisableVertexAttribArray(3);
         GL30.glBindVertexArray(0);
         shader.unbind();
 
+        GL11.glDisable(GL11.GL_BLEND);
         GL11.glDepthMask(true);
     }
 

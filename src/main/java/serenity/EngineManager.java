@@ -3,8 +3,8 @@ package Serenity;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
-import Test.Launcher;
 import Serenity.Util.ILogic;
+import Test.Launcher;
 
 public class EngineManager {
     public static final long NANOSECONDS_IN_SECOND = 1_000_000_000L;
