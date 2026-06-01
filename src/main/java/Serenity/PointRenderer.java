@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL32;
+import org.lwjgl.system.MemoryUtil;
 
 import Serenity.Util.Transformation;
 import Serenity.Util.Utils;
@@ -25,6 +26,7 @@ public class PointRenderer {
     private ShaderManager shader;
     private int vaoId;
     private int count;
+    private int positionVbo;
 
     public PointRenderer() {
         this.window = Launcher.getWindow();
@@ -66,21 +68,43 @@ public class PointRenderer {
 
         vaoId = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(vaoId);
-        storeAttribute(0, 3, positions);
+        positionVbo = storeAttribute(0, 3, positions, GL15.GL_DYNAMIC_DRAW);
         storeAttribute(1, 1, sizes);
         storeAttribute(2, 3, colors);
         storeAttribute(3, 2, glowParams);
         GL30.glBindVertexArray(0);
     }
 
-    private void storeAttribute(int location, int size, float[] data) {
+    private int storeAttribute(int location, int size, float[] data) {
+        return storeAttribute(location, size, data, GL15.GL_STATIC_DRAW);
+    }
+
+    private int storeAttribute(int location, int size, float[] data, int usage) {
         int vbo = GL15.glGenBuffers();
         vbos.add(vbo);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
         FloatBuffer buffer = Utils.storeDataInFloatBuffer(data);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, usage);
         GL20.glVertexAttribPointer(location, size, GL11.GL_FLOAT, false, 0, 0);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        MemoryUtil.memFree(buffer);
+        return vbo;
+    }
+
+    public void updatePositions(List<Particle> particles) {
+        float[] positions = new float[count * 3];
+        for (int i = 0; i < count; i++) {
+            Particle p = particles.get(i);
+            positions[i * 3] = p.position().x;
+            positions[i * 3 + 1] = p.position().y;
+            positions[i * 3 + 2] = p.position().z;
+        }
+
+        FloatBuffer buffer = Utils.storeDataInFloatBuffer(positions);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, positionVbo);
+        GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER, 0, buffer);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        MemoryUtil.memFree(buffer);
     }
 
     public void render(Camera camera) {
